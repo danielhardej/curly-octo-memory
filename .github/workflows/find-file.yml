@@ -52,4 +52,5 @@ jobs:
                 # TENANT_ID: ${{ secrets.TENANT_ID }}
                 CHANGED_FILES: ${{needs.job1.outputs.changedFiles}}
               shell: pwsh
-              run: echo "$CHANGED_FILES"
+              run: |
+                echo "Changed files: $CHANGED_FILES"
