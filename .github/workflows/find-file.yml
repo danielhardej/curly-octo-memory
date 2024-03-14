@@ -19,8 +19,8 @@ jobs:
             - id: findfile
               shell: pwsh
               run: |
-                $outputValue = "Your output value"
-                echo "::set-output name=changedFiles::$outputValue"
+                echo "File Name: $fileName"
+                echo "changedFiles=${{ github.actor }}" >> $GITHUB_OUTPUT
 
     job2:
         name: Print outputs in PowerShell script

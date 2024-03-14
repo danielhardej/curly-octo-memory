@@ -1,9 +1,8 @@
 name: Defining Outputs Intro
 
 on:
-  push:
-      paths:
-          - 'storage_accounts/**'
+  workflow_dispatch:
+  # push:
 
 jobs:
     job1:
