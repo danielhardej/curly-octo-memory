@@ -34,7 +34,7 @@ jobs:
                 if ($addedFiles.Count -gt 0) {
                     $fileName = $addedFiles -join ', '
                     echo "File Name: $fileName"
-                    "changedFiles=$changed_files" >> $env:GITHUB_OUTPUT
+                    echo "changedFiles=$changed_files" >> $env:GITHUB_OUTPUT
                 } else {
                     echo "No new files in 'storage_accounts/'"
                 }
