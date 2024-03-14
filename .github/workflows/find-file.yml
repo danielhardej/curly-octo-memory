@@ -17,13 +17,13 @@ jobs:
             - id: find-diff
               shell: pwsh
               run: |
-                changed_files=$(git diff --name-only HEAD HEAD~1 -- ./subdirectory)
-                if [[ -n "$changed_files" ]]; then
-                    echo "changedFiles=$changed_files" >> $GITHUB_OUTPUT
-                else
+                $changed_files = git diff --name-only HEAD HEAD~1 -- ./subdirectory
+                if ($changed_files) {
+                    echo "changedFiles=$changed_files" >> $env:GITHUB_OUTPUT
+                }
+                else {
                     echo "No files have been changed in ./subdirectory"
-                fi
-
+                }
     job2:
         name: Print outputs in PowerShell script
         needs: job1
