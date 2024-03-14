@@ -8,17 +8,17 @@ permissions: write-all
 
 jobs:
     job1:
-        name: Run PowerShell Script
+        name: Set outputs in PowerShell script
         runs-on: windows-latest
         outputs:
-            output1: ${{ steps.findfile.outputs.jsonfile }}
+            fileName: ${{ steps.findfile.outputs.fileName }}
         steps:
-            - uses: actions/checkout@v4
+            - name: Checkout Repository
+              uses: actions/checkout@v4
               with:
                 fetch-depth: 0 # Fetches the commit history to compare changes
 
-            - name: Find Added File
-              id: findfile
+            - id: findfile
               shell: pwsh
               run: |
                 # Save the output of git diff to a variable
@@ -29,36 +29,37 @@ jobs:
             
                 # Loop through each line of diffOutput
                 foreach ($line in $diffOutput -split "`n") {
-                    if ($line -match 'storage_accounts/') {
-                        $addedFiles += $line
-                    }
+                if ($line -match 'storage_accounts/') {
+                    $addedFiles += $line
+                }
                 }
                 echo "Added Files: $addedFiles"
 
                 # Check if addedFiles is not empty
                 if ($addedFiles.Count -gt 0) {
-                    $fileName = $addedFiles -join ', '
-                    echo "jsonfile=test" >> "$GITHUB_OUTPUT"
-                    echo "File Name: $fileName"
+                $fileName = $addedFiles -join ', '
+                echo "::set-output name=fileName::$fileName"
+                echo "File Name: $fileName"
                 } else {
-                    echo "No new files in 'storage_accounts/'"
+                echo "No new files in 'storage_accounts/'"
                 }
 
     job2:
+        name: Print outputs in PowerShell script
         needs: job1
-        name: Run PowerShell Script
         runs-on: windows-latest
         steps:
-          - uses: actions/checkout@v4
-            with:
-              fetch-depth: 0  # Fetches the commit history to compare changes        
-          - name: Script
-            shell: pwsh
-            env:
-                CLIENT_ID: ${{ secrets.CLIENT_ID }}
-                CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-                SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
-                TENANT_ID: ${{ secrets.TENANT_ID }}
-                FILE_NAME: ${{ needs.job1.outputs.output1 }}
-            run: |
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+              with:
+                fetch-depth: 0  # Fetches the commit history to compare changes        
+            - name: Script
+              shell: pwsh
+              env:
+                # CLIENT_ID: ${{ secrets.CLIENT_ID }}
+                # CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+                # SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
+                # TENANT_ID: ${{ secrets.TENANT_ID }}
+                FILE_NAME: ${{ needs.job1.outputs.fileName }}
+              run: |
                 echo "File Name: $FILE_NAME"
