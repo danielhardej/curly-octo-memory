@@ -40,13 +40,13 @@ jobs:
                 # } else {
                 #     echo "No new files in 'storage_accounts/'"
                 # }
-                
-                $changed_files = git diff --name-only HEAD HEAD~1 -- ./subdirectory
+
+                $changed_files = git diff --name-only HEAD HEAD~1 -- ./storage_accounts
                 if ($changed_files) {
                     echo "changedFiles=$changed_files" >> $env:GITHUB_OUTPUT
                 }
                 else {
-                    echo "No files have been changed in ./subdirectory"
+                    echo "No files have been changed in ./storage_accounts"
                 }
 
     job2:
