@@ -41,6 +41,8 @@ jobs:
                     echo "No new files in 'storage_accounts/'"
                 }
 
+                echo "::set-output name=changedFiles::doesthisworkinstead"
+
     job2:
         name: Print outputs in PowerShell script
         needs: job1
