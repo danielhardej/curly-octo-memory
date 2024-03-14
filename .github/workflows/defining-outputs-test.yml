@@ -15,7 +15,9 @@ jobs:
         - id: step1
           run: echo "test=hello" >> "$GITHUB_OUTPUT"
         - id: step2
-          run: echo "test=${{ github.actor }}" >> "$GITHUB_OUTPUT"
+          run: |
+            $myGitHubHandle = ${{ github.actor }}
+            echo "test=$myGitHubHandle" >> "$GITHUB_OUTPUT"
     job2:
       runs-on: ubuntu-latest
       needs: job1
