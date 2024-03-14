@@ -12,27 +12,22 @@ jobs:
         name: Set outputs in PowerShell script
         runs-on: windows-latest
         outputs:
-            output1: ${{ steps.findfile.outputs.changedFiles }}
-            output2: ${{ steps.control.outputs.changedFilesTest }}
+            output1: ${{ steps.step1.outputs.test }}
+            output2: ${{ steps.step2.outputs.test }}
         steps:
-            - id: findfile
+            - id: step1
               shell: pwsh
-              run: |
-                echo "changedFiles=${{ github.actor }}" >> "$GITHUB_OUTPUT"
-            - id: control
+              run: echo "test=hello" >> "$GITHUB_OUTPUT"
+            - id: step2
               shell: pwsh
-              run: |
-                echo "changedFilesTest=${{ github.actor }}" > $env:GITHUB_OUTPUT
+              run: echo "test=hello" >> $env:GITHUB_OUTPUT
 
     job2:
         name: Print outputs in PowerShell script
         needs: job1
         runs-on: windows-latest
         steps:     
-            - env:
-                CHANGED_FILES: ${{ needs.job1.outputs.output1 }}
-                TEST_CONTROL: ${{ needs.job1.outputs.output2 }}
-              shell: pwsh
-              run: |
-                echo "Changed files: $CHANGED_FILES"
-                echo "Test control: $TEST_CONTROL"
+        - env:
+            OUTPUT1: ${{needs.job1.outputs.output1}}
+            OUTPUT2: ${{needs.job1.outputs.output2}}
+          run: echo "$OUTPUT1 $OUTPUT2"
