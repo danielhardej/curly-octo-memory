@@ -1,8 +1,9 @@
 name: Deploy Storage Account
 on:
-    push:
-        paths:
-            - 'storage_accounts/**'
+    workflow_dispatch:
+    # push:
+    #     paths:
+    #         - 'storage_accounts/**'
 
 permissions: write-all
 
@@ -14,9 +15,6 @@ jobs:
             output1: ${{ steps.findfile.outputs.changedFiles }}
             output2: ${{ steps.control.outputs.changedFilesTest }}
         steps:
-            - uses: actions/checkout@v4
-              with:
-                fetch-depth: 0
             - id: findfile
               shell: pwsh
               run: |
@@ -32,10 +30,6 @@ jobs:
         runs-on: windows-latest
         steps:     
             - env:
-                # CLIENT_ID: ${{ secrets.CLIENT_ID }}
-                # CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-                # SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
-                # TENANT_ID: ${{ secrets.TENANT_ID }}
                 CHANGED_FILES: ${{ needs.job1.outputs.output1 }}
                 TEST_CONTROL: ${{ needs.job1.outputs.output2 }}
               shell: pwsh
