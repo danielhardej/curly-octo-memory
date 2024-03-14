@@ -19,29 +19,8 @@ jobs:
             - id: findfile
               shell: pwsh
               run: |
-                $diffOutput = git diff --name-only HEAD HEAD~1
-                echo "Diff Output: $diffOutput"
-                
-                $addedFiles = @()
-                
-                # Loop through each line of diffOutput
-                foreach ($line in $diffOutput -split "`n") {
-                    if ($line -match 'storage_accounts/') {
-                    $addedFiles += $line
-                    }
-                }
-                echo "Added Files: $addedFiles"
-        
-                # Check if addedFiles is not empty
-                if ($addedFiles.Count -gt 0) {
-                    $fileName = $addedFiles -join ', '
-                    echo "File Name: $fileName"
-                    echo "::set-output name=changedFiles::doesthisworkinstead"
-                } else {
-                    echo "No new files in 'storage_accounts/'"
-                }
-
-                echo "::set-output name=changedFiles::doesthisworkinstead"
+                $outputValue = "Your output value"
+                echo "::set-output name=changedFiles::$outputValue"
 
     job2:
         name: Print outputs in PowerShell script
