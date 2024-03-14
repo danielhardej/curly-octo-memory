@@ -38,8 +38,8 @@ jobs:
                 # Check if addedFiles is not empty
                 if ($addedFiles.Count -gt 0) {
                 $fileName = $addedFiles -join ', '
-                echo "::set-output name=fileName::$fileName"
                 echo "File Name: $fileName"
+                echo "fileName=$fileName" >> $GITHUB_OUTPUT
                 } else {
                 echo "No new files in 'storage_accounts/'"
                 }
