@@ -2,7 +2,7 @@ name: Defining Outputs Intro
 
 on:
     workflow_dispatch:
-    push:
+    # push:
 
 jobs:
     job1:
